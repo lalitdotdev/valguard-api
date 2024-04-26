@@ -35,4 +35,8 @@ app.post('/', async (c) => {
   }
 });
 
+function splitTextIntoWords(text: string): string[] {
+  return text.split(/\s/);
+}
+
 export default app;
