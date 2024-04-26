@@ -39,4 +39,11 @@ function splitTextIntoWords(text: string): string[] {
   return text.split(/\s/);
 }
 
+async function splitTextIntoSemantics(text: string): Promise<string[]> {
+  if (text.split(/\s/).length === 1) return []; // no semantics for single words
+  const documents = await semanticSplitter.createDocuments([text]);
+  const chunks = documents.map((chunk) => chunk.pageContent);
+  return chunks;
+}
+
 export default app;
