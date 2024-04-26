@@ -49,3 +49,27 @@ async function parseCSV(filePath: string, startLine: number, endLine: number): P
       });
   });
 }
+
+const STEP = 30;
+
+const seed = async () => {
+  for (let i = 0; i < 1464; i += STEP) {
+    const start = i;
+    const end = i + STEP;
+
+    const data = await parseCSV('training_data.csv', start, end);
+
+    console.log(`Processing batch ${start}-${end}` + ' (' + data.length + ' rows)');
+    console.log(data);
+
+    const formatted = data.map((row, batchIndex) => ({
+      data: row.text,
+      id: i + batchIndex,
+      metadata: { text: row.text },
+    }));
+
+    await index.upsert(formatted);
+  }
+};
+
+seed();
